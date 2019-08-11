@@ -1,0 +1,24 @@
+{
+  "name": "harbourmaster",
+  "version": "1.0.0",
+  "description": "API access to the Minio backend",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "export NODE_ENV=dev && nodemon src/index.js",
+    "prod": "export NODE_ENV=prod && nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Richard Frost",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/boom": "^7.4.2",
+    "bcrypt": "^3.0.6",
+    "config": "^2.0.1",
+    "hapi": "^17.5.4",
+    "hapi-swagger": "^9.1.1",
+    "inert": "^5.1.0",
+    "minio": "^7.0.11",
+    "nodemon": "^1.18.4",
+    "vision": "^5.4.0"
+  }
+}

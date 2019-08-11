@@ -1,0 +1,8 @@
+{
+    "minioEndPoint": "192.168.55.40",
+    "minioPort": 9000,
+    "minioAccessKey": "",
+    "minioSecretKey": "",
+    "port": 4020,
+    "apiKey": "$2b$10$ngc.uVk2cDeVDYzWdY4bjOWF71OiUNxLwr5xTBxrzyioox7M0NTI2"
+}

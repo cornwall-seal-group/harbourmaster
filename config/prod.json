@@ -1,0 +1,7 @@
+{
+    "minioEndPoint": "play.min.io",
+    "minioPort": 9000,
+    "minioAccessKey": "",
+    "minioSecretKey": "",
+    "port": 4020
+}
