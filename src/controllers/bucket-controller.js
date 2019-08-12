@@ -106,13 +106,7 @@ const getImage = (request, h) => {
                 data += chunk;
             });
             dataStream.on('end', () => {
-                resolve(
-                    h
-                        .response(data)
-                        .type('image/jpeg')
-                        .header('Content-Disposition', 'inline')
-                        .header('Content-type', 'image/jpeg')
-                );
+                resolve(h.response(data).header('Content-type', 'image/jpeg'));
             });
 
             dataStream.on('error', error => {
