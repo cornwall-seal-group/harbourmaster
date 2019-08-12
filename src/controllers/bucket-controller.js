@@ -100,11 +100,17 @@ const getImage = request => {
             if (err) {
                 return resolve(err);
             }
+            const data = [];
+            dataStream.on('data', function(chunk) {
+                data.push(chunk);
+            });
+            dataStream.on('end', function() {
+                resolve(`data:image/jpeg;base64,${encodeImage(data)}`);
+            });
+
             dataStream.on('error', error => {
                 resolve(error);
             });
-
-            resolve(`data:image/jpeg;base64,${encodeImage(dataStream)}`);
         });
     });
 };
