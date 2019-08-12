@@ -97,9 +97,23 @@ const getImage = (request, h) => {
         return Boom.badRequest('Please supply a image name');
     }
     return new Promise(resolve => {
-        minioClient.presignedGetObject(bucket, image, 24 * 60 * 60, (err, presignedUrl) => {
-            if (err) return resolve(err);
-            resolve(presignedUrl);
+        minioClient.getObject(bucket, image, (err, dataStream) => {
+            if (err) {
+                return resolve(err);
+            }
+            const data = [];
+            dataStream.on('data', chunk => {
+                data.push(chunk);
+            });
+            dataStream.on('end', () => {
+                console.log('data', data);
+                console.log('encodeImage', encodeImage(data));
+                resolve(h.response(`data:image/jpeg;base64,${encodeImage(data)}`).header('Content-type', 'image/jpeg'));
+            });
+
+            dataStream.on('error', error => {
+                resolve(error);
+            });
         });
     });
 };
