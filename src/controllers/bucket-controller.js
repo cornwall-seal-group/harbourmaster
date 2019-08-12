@@ -101,11 +101,11 @@ const getImage = request => {
             if (err) {
                 return resolve(err);
             }
-            const data = [];
-            dataStream.on('data', function(chunk) {
-                data.push(chunk);
+            let data = '';
+            dataStream.on('data', chunk => {
+                data += chunk;
             });
-            dataStream.on('end', function() {
+            dataStream.on('end', () => {
                 resolve(`data:image/jpeg;base64,${encodeImage(data)}`);
             });
 
