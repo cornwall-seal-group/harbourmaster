@@ -2,6 +2,7 @@ const Boom = require('@hapi/boom');
 const Bcrypt = require('bcrypt');
 const config = require('config');
 const Minio = require('minio');
+const btoa = require('btoa');
 
 const minioClient = new Minio.Client({
     endPoint: config.minioEndPoint,
