@@ -9,7 +9,10 @@ const Pack = require('../package');
 
 const server = hapi.server({
     port: config.port,
-    host: 'localhost'
+    host: 'localhost',
+    routes: {
+        cors: true
+    }
 });
 
 const init = async () => {
