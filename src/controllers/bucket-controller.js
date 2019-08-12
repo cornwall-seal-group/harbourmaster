@@ -106,7 +106,7 @@ const getImage = request => {
                 data += chunk;
             });
             dataStream.on('end', () => {
-                resolve(`data:image/jpeg;base64,${encodeImage(data)}`);
+                resolve(`data:image/jpeg;base64,${data}`);
             });
 
             dataStream.on('error', error => {
