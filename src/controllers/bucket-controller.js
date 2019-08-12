@@ -113,6 +113,7 @@ const getImage = (request, h) => {
                         .response(buf)
                         .bytes(buf.length)
                         .header('Content-type', 'image/jpeg')
+                        .header('Content-Disposition', 'inline')
                 );
             });
 
