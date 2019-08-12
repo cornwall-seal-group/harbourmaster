@@ -18,5 +18,14 @@ module.exports = [
             tags: ['api', 'v1', 'bucket', 'files']
         },
         handler: BucketController.listAllFiles
+    },
+    {
+        method: 'GET',
+        path: '/api/v1/bucket/{bucket}/image/{image}',
+        config: {
+            description: 'Retrieve image from bucket',
+            tags: ['api', 'v1', 'bucket', 'image']
+        },
+        handler: BucketController.getImage
     }
 ];
