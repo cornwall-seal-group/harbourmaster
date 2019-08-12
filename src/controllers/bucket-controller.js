@@ -76,7 +76,7 @@ const encodeImage = data => {
     return btoa(str).replace(/.{76}(?=.)/g, '$&\n');
 };
 
-const getImage = request => {
+const getImage = (request, h) => {
     const { headers } = request;
 
     const apiKey = headers['x-api-key'] || '';
@@ -106,7 +106,7 @@ const getImage = request => {
                 data += chunk;
             });
             dataStream.on('end', () => {
-                resolve(`data:image/jpeg;base64,${data}`);
+                resolve(h.response(data).type('image/jpeg;base64'));
             });
 
             dataStream.on('error', error => {
