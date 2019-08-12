@@ -107,8 +107,10 @@ const getImage = (request, h) => {
             });
             dataStream.on('end', () => {
                 console.log('data', data);
-                console.log('encodeImage', encodeImage(data));
-                resolve(h.response(`data:image/jpeg;base64,${encodeImage(data)}`).header('Content-type', 'image/jpeg'));
+
+                const buf = new Buffer(data, 'base64');
+
+                resolve(h.response(buf).header('Content-type', 'image/jpeg'));
             });
 
             dataStream.on('error', error => {
