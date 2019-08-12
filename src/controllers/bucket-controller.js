@@ -96,23 +96,17 @@ const getImage = request => {
         return Boom.badRequest('Please supply a image name');
     }
     return new Promise(resolve => {
-        Bcrypt.compare(apiKey, configApiKey).then(match => {
-            if (match) {
-                minioClient.getObject(bucket, image, (err, dataStream) => {
-                    if (err) {
-                        return resolve(err);
-                    }
-                    dataStream.on('end', data => {
-                        resolve(`data:image/jpeg;base64,${encodeImage(data)}`);
-                    });
-
-                    dataStream.on('error', error => {
-                        resolve(error);
-                    });
-                });
-            } else {
-                resolve(Boom.unauthorized('Incorrect API Key'));
+        minioClient.getObject(bucket, image, (err, dataStream) => {
+            if (err) {
+                return resolve(err);
             }
+            dataStream.on('end', data => {
+                resolve(`data:image/jpeg;base64,${encodeImage(data)}`);
+            });
+
+            dataStream.on('error', error => {
+                resolve(error);
+            });
         });
     });
 };
