@@ -107,7 +107,7 @@ const getImage = (request, h) => {
             });
             dataStream.on('end', () => {
                 const buf = Buffer.from(data).toString('base64');
-
+                console.log(buf.length, buf);
                 resolve(
                     h
                         .response(buf)
