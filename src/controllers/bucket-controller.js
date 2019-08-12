@@ -101,12 +101,12 @@ const getImage = (request, h) => {
             if (err) {
                 return resolve(err);
             }
-            let data = '';
+            const data = [];
             dataStream.on('data', chunk => {
-                data += chunk;
+                data.push(chunk);
             });
             dataStream.on('end', () => {
-                resolve(h.response(data).header('Content-type', 'image/jpeg'));
+                resolve(h.response(`data:image/jpeg;base64,${encodeImage(data)}`).header('Content-type', 'image/jpeg'));
             });
 
             dataStream.on('error', error => {
