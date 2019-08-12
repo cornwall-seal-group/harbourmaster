@@ -100,13 +100,11 @@ const getImage = request => {
             if (err) {
                 return resolve(err);
             }
-            dataStream.on('end', data => {
-                resolve(`data:image/jpeg;base64,${encodeImage(data)}`);
-            });
-
             dataStream.on('error', error => {
                 resolve(error);
             });
+
+            resolve(`data:image/jpeg;base64,${encodeImage(dataStream)}`);
         });
     });
 };
