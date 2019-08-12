@@ -110,8 +110,8 @@ const getImage = (request, h) => {
                 console.log(buf.length, buf);
                 resolve(
                     h
-                        .response(buf)
-                        .bytes(buf.length)
+                        .response(data)
+                        .bytes(data.length)
                         .header('Content-type', 'image/jpeg')
                         .header('Content-Disposition', 'inline')
                 );
