@@ -106,12 +106,12 @@ const getImage = (request, h) => {
                 data.push(chunk);
             });
             dataStream.on('end', () => {
-                const buf = Buffer.from(data).toString('base64');
-                console.log(data.length, data);
+                const buf = Buffer.from(encodeImage(data)).toString('base64');
+                console.log(buf.length, buf);
                 resolve(
                     h
-                        .response(data)
-                        .bytes(data.length)
+                        .response(buf)
+                        .bytes(buf.length)
                         .header('Content-type', 'image/jpeg')
                         .header('Content-Disposition', 'inline')
                 );
