@@ -15,9 +15,16 @@ const getBuckets = request => {
     const { headers } = request;
 
     const apiKey = headers['x-api-key'] || '';
+    const configApiKey = config.apiKey;
+
+    if (!configApiKey) {
+        return Boom.internal(
+            'Sorry, this project has not been setup with the correct security. Failing to process your request.'
+        );
+    }
 
     return new Promise(resolve => {
-        Bcrypt.compare(apiKey, config.apiKey).then(match => {
+        Bcrypt.compare(apiKey, configApiKey).then(match => {
             if (match) {
                 minioClient.listBuckets((err, buckets) => {
                     if (err) return resolve(err);
@@ -37,12 +44,18 @@ const listAllFiles = request => {
 
     const { params } = request;
     const { bucket = '' } = params;
+    const configApiKey = config.apiKey;
 
+    if (!configApiKey) {
+        return Boom.internal(
+            'Sorry, this project has not been setup with the correct security. Failing to process your request.'
+        );
+    }
     if (bucket === '') {
         return Boom.badRequest('Please supply a bucket name');
     }
     return new Promise(resolve => {
-        Bcrypt.compare(apiKey, config.apiKey).then(match => {
+        Bcrypt.compare(apiKey, configApiKey).then(match => {
             if (match) {
                 const stream = minioClient.listObjects(bucket, '', true);
                 stream.on('data', obj => {
