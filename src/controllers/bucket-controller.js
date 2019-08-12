@@ -106,9 +106,7 @@ const getImage = (request, h) => {
                 data.push(chunk);
             });
             dataStream.on('end', () => {
-                console.log('data', data);
-
-                const buf = new Buffer(data, 'base64');
+                const buf = Buffer.from(data).toString('base64');
 
                 resolve(h.response(buf).header('Content-type', 'image/jpeg'));
             });
