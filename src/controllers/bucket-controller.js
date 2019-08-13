@@ -59,8 +59,12 @@ const listAllFiles = request => {
         Bcrypt.compare(apiKey, configApiKey).then(match => {
             if (match) {
                 const stream = minioClient.listObjects(bucket, '', true);
+                const objects = [];
                 stream.on('data', obj => {
-                    resolve(obj);
+                    objects.push(obj);
+                });
+                stream.on('data', () => {
+                    resolve(objects);
                 });
             } else {
                 resolve(Boom.unauthorized('Incorrect API Key'));
