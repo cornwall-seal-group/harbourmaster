@@ -42,7 +42,6 @@ const getBuckets = request => {
             if (match) {
                 minioClient.listBuckets((err, buckets) => {
                     if (err) return resolve(err);
-                    resolve(buckets);
 
                     const numBuckets = buckets.length;
                     let bucketsProcessed = 0;
