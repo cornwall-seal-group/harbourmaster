@@ -46,7 +46,8 @@ const getBuckets = request => {
 
                     const numBuckets = buckets.length;
                     let bucketsProcessed = 0;
-                    buckets.forEach(({ name }) => {
+                    buckets.forEach(bucket => {
+                        const { name } = bucket;
                         getObjectsFromBucket(name).then(objects => {
                             bucket.files = objects.length;
                             bucketsProcessed += 1;
