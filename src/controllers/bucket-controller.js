@@ -12,6 +12,19 @@ const minioClient = new Minio.Client({
     secretKey: config.minioSecretKey
 });
 
+const getObjectsFromBucket = bucket => {
+    return new Promise(resolve => {
+        const stream = minioClient.listObjects(bucket, '', true);
+        const objects = [];
+        stream.on('data', obj => {
+            objects.push(obj);
+        });
+        stream.on('end', () => {
+            resolve(objects);
+        });
+    });
+};
+
 const getBuckets = request => {
     const { headers } = request;
 
@@ -30,6 +43,18 @@ const getBuckets = request => {
                 minioClient.listBuckets((err, buckets) => {
                     if (err) return resolve(err);
                     resolve(buckets);
+
+                    const numBuckets = buckets.length;
+                    let bucketsProcessed = 0;
+                    buckets.forEach(bucket => {
+                        getObjectsFromBucket(bucket).then(objects => {
+                            bucket.files = objects.length;
+                            bucketsProcessed += 1;
+                            if (numBuckets === bucketsProcessed) {
+                                resolve(buckets);
+                            }
+                        });
+                    });
                 });
             } else {
                 resolve(Boom.unauthorized('Incorrect API Key'));
@@ -58,14 +83,7 @@ const listAllFiles = request => {
     return new Promise(resolve => {
         Bcrypt.compare(apiKey, configApiKey).then(match => {
             if (match) {
-                const stream = minioClient.listObjects(bucket, '', true);
-                const objects = [];
-                stream.on('data', obj => {
-                    objects.push(obj);
-                });
-                stream.on('data', () => {
-                    resolve(objects);
-                });
+                getObjectsFromBucket(bucket).then(objects => resolve(objects));
             } else {
                 resolve(Boom.unauthorized('Incorrect API Key'));
             }
@@ -73,63 +91,7 @@ const listAllFiles = request => {
     });
 };
 
-const encodeImage = data => {
-    const str = data.reduce((a, b) => {
-        return a + String.fromCharCode(b);
-    }, '');
-    return btoa(str).replace(/.{76}(?=.)/g, '$&\n');
-};
-
-const getImage = (request, h) => {
-    const { headers } = request;
-
-    const apiKey = headers['x-api-key'] || '';
-
-    const { params } = request;
-    const { bucket = '', image = '' } = params;
-    const configApiKey = config.apiKey;
-
-    if (!configApiKey) {
-        return Boom.internal(
-            'Sorry, this project has not been setup with the correct security. Failing to process your request.'
-        );
-    }
-    if (bucket === '') {
-        return Boom.badRequest('Please supply a bucket name');
-    }
-    if (image === '') {
-        return Boom.badRequest('Please supply a image name');
-    }
-    return new Promise(resolve => {
-        minioClient.getObject(bucket, image, (err, dataStream) => {
-            if (err) {
-                return resolve(err);
-            }
-            const data = [];
-            dataStream.on('data', chunk => {
-                data.push(chunk);
-            });
-            dataStream.on('end', () => {
-                const buf = Buffer.from(encodeImage(data)).toString('base64');
-                console.log(buf.length, buf);
-                resolve(
-                    h
-                        .response(buf)
-                        .bytes(buf.length)
-                        .header('Content-type', 'image/jpeg')
-                        .header('Content-Disposition', 'inline')
-                );
-            });
-
-            dataStream.on('error', error => {
-                resolve(error);
-            });
-        });
-    });
-};
-
 module.exports = {
     getBuckets,
-    listAllFiles,
-    getImage
+    listAllFiles
 };
