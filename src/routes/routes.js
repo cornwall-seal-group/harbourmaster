@@ -18,5 +18,14 @@ module.exports = [
             tags: ['api', 'v1', 'bucket', 'files']
         },
         handler: BucketController.listAllFiles
+    },
+    {
+        method: 'GET',
+        path: '/api/v1/bucket/{bucket}/files/{pdIteration}',
+        config: {
+            description: 'List all files in a bucket against a pattern detection model',
+            tags: ['api', 'v1', 'bucket', 'files', 'pattern detection']
+        },
+        handler: BucketController.listAllPatternDetectionFiles
     }
 ];
