@@ -4,9 +4,9 @@ const ImageController = require('../controllers/image-controller');
 module.exports = [
     {
         method: 'GET',
-        path: '/api/v1/buckets',
+        path: '/api/v1/buckets/{folder}',
         config: {
-            description: 'View all buckets',
+            description: 'List all buckets and return their count against a folder',
             tags: ['api', 'v1', 'buckets']
         },
         handler: BucketController.getBuckets
