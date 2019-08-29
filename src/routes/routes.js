@@ -1,4 +1,5 @@
 const BucketController = require('../controllers/bucket-controller');
+const ImageController = require('../controllers/image-controller');
 
 module.exports = [
     {
@@ -27,5 +28,14 @@ module.exports = [
             tags: ['api', 'v1', 'bucket', 'files', 'pattern detection']
         },
         handler: BucketController.listAllPatternDetectionFiles
+    },
+    {
+        method: 'DELETE',
+        path: '/api/v1/bucket/{bucket}/files/{filename}',
+        config: {
+            description: 'Remove an image that had been identified by the pattern detection model',
+            tags: ['api', 'v1', 'image', 'remove', 'pattern detection']
+        },
+        handler: ImageController.removePatternDetectionImage
     }
 ];
