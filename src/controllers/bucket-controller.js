@@ -29,6 +29,9 @@ const getObjectsFromBucket = ({ bucket, prefix = 'originals' }) => {
 const getBuckets = request => {
     const { headers } = request;
 
+    const { params } = request;
+    const { folder = 'originals' } = params;
+
     const apiKey = headers['x-api-key'] || '';
     const configApiKey = config.apiKey;
 
@@ -48,7 +51,7 @@ const getBuckets = request => {
                     let bucketsProcessed = 0;
                     buckets.forEach(bucket => {
                         const { name } = bucket;
-                        getObjectsFromBucket({ name }).then(objects => {
+                        getObjectsFromBucket({ name, prefix: folder }).then(objects => {
                             bucket.files = objects.length;
                             bucketsProcessed += 1;
                             if (numBuckets === bucketsProcessed) {
