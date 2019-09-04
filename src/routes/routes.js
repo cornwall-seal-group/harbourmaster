@@ -1,41 +1,22 @@
-const BucketController = require('../controllers/bucket-controller');
-const ImageController = require('../controllers/image-controller');
+const SealController = require('../controllers/seal-controller');
 
 module.exports = [
     {
         method: 'GET',
-        path: '/api/v1/buckets/{folder}',
+        path: '/api/v1/seals',
         config: {
-            description: 'List all buckets and return their count against a folder',
-            tags: ['api', 'v1', 'buckets']
+            description: 'List all seals',
+            tags: ['api', 'v1', 'seals']
         },
-        handler: BucketController.getBuckets
+        handler: SealController.getSeals
     },
     {
         method: 'GET',
-        path: '/api/v1/bucket/{bucket}/files',
+        path: '/api/v1/seals/{seal}',
         config: {
-            description: 'List all files in a bucket',
-            tags: ['api', 'v1', 'bucket', 'files']
+            description: 'List all files for a seal',
+            tags: ['api', 'v1', 'seal', 'files']
         },
-        handler: BucketController.listAllFiles
-    },
-    {
-        method: 'GET',
-        path: '/api/v1/bucket/{bucket}/files/{pdIteration}',
-        config: {
-            description: 'List all files in a bucket against a pattern detection model',
-            tags: ['api', 'v1', 'bucket', 'files', 'pattern detection']
-        },
-        handler: BucketController.listAllPatternDetectionFiles
-    },
-    {
-        method: 'DELETE',
-        path: '/api/v1/bucket/{bucket}/files/{filename}',
-        config: {
-            description: 'Remove an image that had been identified by the pattern detection model',
-            tags: ['api', 'v1', 'image', 'remove', 'pattern detection']
-        },
-        handler: ImageController.removePatternDetectionImage
+        handler: SealController.listAllFiles
     }
 ];

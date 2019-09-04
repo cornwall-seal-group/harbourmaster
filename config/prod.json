@@ -1,7 +1,5 @@
 {
-    "minioEndPoint": "play.min.io",
-    "minioPort": 9000,
-    "minioAccessKey": "",
-    "minioSecretKey": "",
-    "port": 4020
+    "port": 4020,
+    "apiKey": "",
+    "imagesDir": "../minio-images/"
 }

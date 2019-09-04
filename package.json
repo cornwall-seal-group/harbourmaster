@@ -1,7 +1,7 @@
 {
   "name": "harbourmaster",
   "version": "1.0.0",
-  "description": "API access to the Minio backend",
+  "description": "API access to stored seals",
   "main": "src/index.js",
   "scripts": {
     "start": "export NODE_ENV=dev && nodemon src/index.js",
@@ -11,15 +11,14 @@
   "author": "Richard Frost",
   "license": "ISC",
   "dependencies": {
-    "@hapi/boom": "^7.4.2",
+    "@hapi/boom": "^7.4.3",
     "bcrypt": "^3.0.6",
     "btoa": "^1.2.1",
     "config": "^2.0.1",
     "hapi": "^17.5.4",
     "hapi-swagger": "^9.1.1",
     "inert": "^5.1.0",
-    "minio": "^7.0.11",
-    "nodemon": "^1.18.4",
+    "nodemon": "^1.19.2",
     "vision": "^5.4.0"
   }
 }
