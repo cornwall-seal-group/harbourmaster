@@ -3,22 +3,25 @@ const Bcrypt = require('bcrypt');
 const config = require('config');
 const fs = require('fs');
 
+const ignoreFolders = ['albums', 'zipfiles'];
 const getAllSeals = () => {
     const folders = fs.readdirSync(config.imagesDir);
     const seals = {};
     folders.forEach(folder => {
-        const seal = {};
-        const folderPath = `${config.imagesDir}${folder}`;
-        const subfolders = fs.readdirSync(folderPath);
-        let totalFiles = 0;
-        subfolders.forEach(subfolder => {
-            const subfolderPath = `${config.imagesDir}${folder}/${subfolder}`;
-            const files = fs.readdirSync(subfolderPath).length || 0;
-            totalFiles += files;
-            seal[subfolder] = files;
-        });
-        seal.total = totalFiles;
-        seals[folder] = seal;
+        if (!ignoreFolders.includes(folder)) {
+            const seal = {};
+            const folderPath = `${config.imagesDir}${folder}`;
+            const subfolders = fs.readdirSync(folderPath);
+            let totalFiles = 0;
+            subfolders.forEach(subfolder => {
+                const subfolderPath = `${config.imagesDir}${folder}/${subfolder}`;
+                const files = fs.readdirSync(subfolderPath).length || 0;
+                totalFiles += files;
+                seal[subfolder] = files;
+            });
+            seal.total = totalFiles;
+            seals[folder] = seal;
+        }
     });
     return seals;
 };
