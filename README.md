@@ -30,3 +30,11 @@ seal-images/
 ### Get all files for a pattern detection iteration for a seal (in a bucket)
 
 `https://{server}/harbourmaster/api/v1/bucket/{bucketName}/files/{iterationId}`
+
+## Running with forever
+
+To run the app using forever run:
+
+```
+export NODE_ENV=prod && nohup forever start -c "node src/index.js" ./
+```
