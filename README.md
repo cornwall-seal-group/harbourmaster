@@ -1,35 +1,52 @@
 # Harbourmaster
 
-Provides an API to access the minio instance including all seal images
+Provides an API to access the seal images stored on the server instance
 
-## Bucket folder structure
+## Folder structure
 
-Each bucket has a particular folder structure with subfolders to separate the different images.
+Each folder has a particular structure with subfolders to separate the different images.
 
 ```
 seal-images/
     LF1/
         originals/ # is where all the original images are stored, unaltered
-        pd_{iteration}/ # is where all prediction images are stored that have been found from the Pattern Detection (pd) model iteration
+        bottling-left/ # is where all bottling left images are stored
+        uncategorised/
+        ...
     LF28/
         originals/
-        pd_{iteration}/
+        bottling-left/
+        bottling-right/
+        uncategorised/
+        ...
     ...
 ```
 
+The album parser will upload all images into the `originals` folder of each seal.
+
+The Pelican microservice when used will submit all these images to the trained pose classifier model and will move the images to the appropriate `pose` folder if a successful match is found. If a match isn't found then the image is put in the `uncategorised` folder.
+
 ## Methods
 
-### Get all buckets
+### Get all seals
 
-`https://{server}/harbourmaster/api/v1/buckets`
+`https://{server}/harbourmaster/api/v1/seals`
 
-### Get all files in a bucket
+### Get all images for a seal
 
-`https://{server}/harbourmaster/api/v1/bucket/{bucketName}/files`
+`https://{server}/harbourmaster/api/v1/seals/{seal}`
 
-### Get all files for a pattern detection iteration for a seal (in a bucket)
+### Get all uploaded albums
 
-`https://{server}/harbourmaster/api/v1/bucket/{bucketName}/files/{iterationId}`
+This lists all albums that have been submitted
+
+`https://{server}/harbourmaster/api/v1/albums`
+
+
+### Get the upload details for a particular album
+
+`https://{server}/harbourmaster/api/v1/albums/{album}`
+
 
 ## Running with forever
 
