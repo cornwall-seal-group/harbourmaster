@@ -89,7 +89,46 @@ const listAllFiles = request => {
     });
 };
 
+const getSealImagesByPose = ({ seal, pose }) => {
+    const folder = `${config.imagesDir + seal}/${pose}`;
+    const files = fs.readdirSync(folder);
+
+    return files;
+};
+
+const listAllPoseImages = request => {
+    const { headers } = request;
+
+    const apiKey = headers['x-api-key'] || '';
+
+    const { params } = request;
+    const { seal = '', pose = '' } = params;
+    const configApiKey = config.apiKey;
+
+    if (!configApiKey) {
+        return Boom.internal(
+            'Sorry, this project has not been setup with the correct security. Failing to process your request.'
+        );
+    }
+    if (seal === '') {
+        return Boom.badRequest('Please supply a seal name');
+    }
+    if (pose === '') {
+        return Boom.badRequest('Please supply a pose name');
+    }
+    return new Promise(resolve => {
+        Bcrypt.compare(apiKey, configApiKey).then(match => {
+            if (match) {
+                resolve(getSealImagesByPose({ seal, pose }));
+            } else {
+                resolve(Boom.unauthorized('Incorrect API Key'));
+            }
+        });
+    });
+};
+
 module.exports = {
     getSeals,
-    listAllFiles
+    listAllFiles,
+    listAllPoseImages
 };

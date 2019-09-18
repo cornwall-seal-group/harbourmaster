@@ -36,6 +36,11 @@ The Pelican microservice when used will submit all these images to the trained p
 
 `https://{server}/harbourmaster/api/v1/seals/{seal}`
 
+
+### Get all images for a seal for a particular pose
+
+`https://{server}/harbourmaster/api/v1/seal/{seal}/poses/{pose}`
+
 ### Get all uploaded albums
 
 This lists all albums that have been submitted
