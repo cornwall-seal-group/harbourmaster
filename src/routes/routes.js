@@ -22,6 +22,15 @@ module.exports = [
     },
     {
         method: 'GET',
+        path: '/api/v1/seal/{seal}/poses/{pose}',
+        config: {
+            description: 'List all images for a seal against a particular pose',
+            tags: ['api', 'v1', 'seal', 'pose']
+        },
+        handler: SealController.listAllPoseImages
+    },
+    {
+        method: 'GET',
         path: '/api/v1/albums',
         config: {
             description: 'List all albums',
