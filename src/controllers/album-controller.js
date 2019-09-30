@@ -8,7 +8,7 @@ const getAllAlbums = () => {
     const albumFolder = fs.readdirSync(`${config.imagesDir}albums`);
     albumFolder.forEach(file => {
         const ext = file.split('.')[1];
-        if (ext === 'pptx') {
+        if (ext === 'json') {
             albums.push(file);
         }
     });
