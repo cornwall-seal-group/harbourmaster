@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/boom": "^7.4.3",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "btoa": "^1.2.1",
     "config": "^2.0.1",
     "hapi": "^17.5.4",
